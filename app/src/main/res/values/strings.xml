@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Prayer Journal</string>
+    <string name="today">Today</string>
 </resources>
