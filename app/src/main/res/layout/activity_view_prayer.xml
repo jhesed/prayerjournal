@@ -7,40 +7,41 @@
 
 
     <!-- DIALOG BOX TITLE -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:padding="10dp"
         android:layout_gravity="center"
         android:background="@color/colorBackground"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/iconInfoDialog"
-            android:src="@drawable/ic_pray"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="47dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Prayer Item Title"
             android:id="@+id/dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:gravity="center|fill_vertical"
-            android:autoText="true"
             android:capitalize="words"
             android:clickable="false"
+            android:gravity="fill_vertical|center"
+            android:text="Prayer Item Title"
             android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorTextBackground" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription=""
+            android:src="@android:drawable/ic_menu_edit" />
+
+
+    </RelativeLayout>
 
     <!-- INFO -->
 

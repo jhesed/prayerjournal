@@ -7,41 +7,43 @@
 
 
     <!-- DIALOG BOX TITLE -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:padding="10dp"
         android:layout_gravity="center"
         android:background="@color/colorBackground"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="1">
+
 
         <!--Change Icon and Title programatically-->
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/dialog_icon"
-            android:src="@android:drawable/ic_menu_edit"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            />
 
         <TextView
+            android:id="@+id/dialogTitle"
             android:layout_width="wrap_content"
-            android:layout_height="47dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Edit prayer request"
-            android:id="@+id/dialog_title"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:gravity="center|fill_vertical"
-            android:autoText="true"
             android:capitalize="words"
             android:clickable="false"
+            android:gravity="fill_vertical|center"
+            android:text="Edit Prayer Request"
             android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorTextBackground" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription=""
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+    </RelativeLayout>
 
     <!-- INFO -->
 
@@ -401,13 +403,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".50"
-                                android:text="On"
+                                android:text="Yes"
                                 android:onClick="onRadioButtonClicked"/>
                             <RadioButton android:id="@+id/radio_answered_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".50"
-                                android:text="Off"
+                                android:text="Soon"
                                 android:checked="true"
                                 android:onClick="onRadioButtonClicked"/>
 
