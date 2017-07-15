@@ -1,0 +1,458 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|fill_vertical">
+
+
+    <!-- DIALOG BOX TITLE -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:background="@color/colorBackground"
+        android:gravity="center">
+
+        <!--Change Icon and Title programatically-->
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/dialog_icon"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Edit prayer request"
+            android:id="@+id/dialog_title"
+            android:layout_gravity="center"
+            android:gravity="center|fill_vertical"
+            android:autoText="true"
+            android:capitalize="words"
+            android:clickable="false"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextBackground" />
+
+    </LinearLayout>
+
+    <!-- INFO -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:weightSum="1"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextBackground"
+            android:gravity="center"
+            android:layout_weight=".20">
+
+            <!--TITLES-->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:gravity="center"
+                android:layout_marginLeft="20dp">
+
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="86dp"
+                    android:id="@+id/prayer_title"
+                    android:src="@drawable/ic_pray" />
+
+            </LinearLayout>
+
+            <!--DYNAMIC VALUES-->
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:layout_weight=".8"
+                android:layout_marginLeft="20dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTextBackground"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Title:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingBottom="10dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/prayer_title"
+                        android:text=""
+                        android:textColor="@color/colorTextEmphasis"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--END INFO-->
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:weightSum="1"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextBackground"
+            android:gravity="center"
+            android:layout_weight=".20">
+
+            <!--TITLES-->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:gravity="center"
+                android:layout_marginLeft="20dp">
+
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="86dp"
+                    android:id="@+id/prayer_content"
+                    android:src="@drawable/ic_content" />
+
+            </LinearLayout>
+
+            <!--DYNAMIC VALUES-->
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:layout_weight=".8"
+                android:layout_marginLeft="20dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTextBackground"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Content:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingBottom="10dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text=""
+                        android:id="@+id/prayer_content"
+                        android:textColor="@color/colorTextEmphasis"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--DIVIDER-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <!-- INFO -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:weightSum="1"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextBackground"
+            android:gravity="center"
+            android:layout_weight=".20">
+
+            <!--TITLES-->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:gravity="center"
+                android:layout_marginLeft="20dp">
+
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="86dp"
+                    android:id="@+id/prayer_reminder"
+                    android:src="@drawable/ic_clock" />
+
+            </LinearLayout>
+
+            <!--DYNAMIC VALUES-->
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:layout_weight=".80"
+                android:layout_marginLeft="20dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTextBackground"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reminder:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingBottom="10dp"/>
+
+
+                        <RadioGroup
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorTextBackground"
+                                android:weightSum="1">
+
+                                <RadioButton android:id="@+id/radio_yes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".50"
+                                    android:text="On"
+                                    android:onClick="onRadioButtonClicked"/>
+                                <RadioButton android:id="@+id/radio_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".50"
+                                    android:text="Off"
+                                    android:checked="true"
+                                    android:onClick="onRadioButtonClicked"/>
+
+                            </LinearLayout>
+                        </RadioGroup>
+
+
+                    <TimePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"
+                        android:textColor="@color/colorTextEmphasis"
+                        android:id="@+id/time_picker"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--END INFO-->
+    <!--DIVIDER-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+    <!-- INFO -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:weightSum="1"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextBackground"
+            android:gravity="center"
+            android:layout_weight=".20">
+
+            <!--TITLES-->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:gravity="center"
+                android:layout_marginLeft="20dp">
+
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="86dp"
+                    android:id="@+id/prayer_answered"
+                    android:src="@drawable/ic_answered" />
+
+            </LinearLayout>
+
+            <!--DYNAMIC VALUES-->
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTextBackground"
+                android:layout_weight=".80"
+                android:layout_marginLeft="20dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTextBackground"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Answered:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingBottom="10dp"/>
+
+                    <RadioGroup
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorTextBackground"
+                            android:weightSum="1">
+
+                            <RadioButton android:id="@+id/radio_answered_yes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".50"
+                                android:text="On"
+                                android:onClick="onRadioButtonClicked"/>
+                            <RadioButton android:id="@+id/radio_answered_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".50"
+                                android:text="Off"
+                                android:checked="true"
+                                android:onClick="onRadioButtonClicked"/>
+
+                        </LinearLayout>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--END INFO-->
+
+    <!--DIVIDER-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+
+
+
+    <!--DIVIDER-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:background="@color/colorBackground"
+            android:textColor="@color/colorTextBackground"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/dialogOk"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
