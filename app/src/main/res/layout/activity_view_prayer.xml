@@ -21,22 +21,26 @@
             android:id="@+id/dialogTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_toStartOf="@+id/edit_icon"
+            android:layout_weight=".80"
             android:capitalize="words"
             android:clickable="false"
-            android:gravity="fill_vertical|center"
+            android:gravity="center"
+            android:paddingRight="30dp"
             android:text="Prayer Item Title"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorTextBackground" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/edit_icon"
+            style="@android:style/Widget.Holo.Light.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:contentDescription=""
             android:src="@android:drawable/ic_menu_edit" />
 

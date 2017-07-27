@@ -8,5 +8,6 @@
     <color name="colorTextBackground">#F2F3F4</color>
     <color name="colorTextEmphasis">#373D3F</color>
     <color name="colorBackground">#107896</color>
+    <color name="colorBackgroundLighter">#1078</color>
 
 </resources>

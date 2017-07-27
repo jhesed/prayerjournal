@@ -30,6 +30,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.prayerCollections = prayerCollections;
         this.prayers = prayers;
+
     }
 
     public Object getChild(int groupPosition, int childPosition) {

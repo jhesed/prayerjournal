@@ -8,12 +8,16 @@ import java.util.Map;
 import com.jjhsoftware.prayerjournal.adapters.ExpandableListAdapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class TodayPrayer extends Activity {
@@ -41,6 +45,7 @@ public class TodayPrayer extends Activity {
         final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
                 this, groupList, prayerCollection);
         expListView.setAdapter(expListAdapter);
+        expListView.expandGroup(0); // select pending by default
 
         //setGroupIndicatorToRight();
 
@@ -50,16 +55,22 @@ public class TodayPrayer extends Activity {
                                         int groupPosition, int childPosition, long id) {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+//                        .show();
 
+                // Show pop up dialog of information
+                showDetails();
                 return true;
+
+                // Show dialog box
             }
         });
     }
 
     private void createGroupList() {
         groupList = new ArrayList<String>();
+
+        // TODO: Fetch counter in DB
         groupList.add(this.PENDING_TITLE + " (4)");
         groupList.add(this.DONE_TITLE + " (0)");
         groupList.add(this.ANSWERED_TITLE + " (0)");
@@ -113,4 +124,119 @@ public class TodayPrayer extends Activity {
 //        getMenuInflater().inflate(R.menu.activity_main, menu);
 //        return true;
 //    }
+
+    private void showDetails() {
+        /**
+         Displays details on prayer item
+         */
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View layout = inflater.inflate(R.layout.activity_view_prayer, null);
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+
+        // close dialog box on click
+        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        // edit dialog box
+        ImageButton editButton = (ImageButton)layout.findViewById(R.id.edit_icon);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editDetails();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void editDetails() {
+        /**
+         Edit details on prayer item
+         */
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View layout = inflater.inflate(R.layout.activity_add_edit_prayer, null);
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+
+        // submit button on click
+        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Add saving to DB here
+
+                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        });
+
+        // close dialog box on click
+        Button cancelButton = (Button)layout.findViewById(R.id.dialogCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void addDetails() {
+        /**
+         Edit details on prayer item
+         */
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View layout = inflater.inflate(R.layout.activity_add_edit_prayer, null);
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+
+        // submit button on click
+        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Add saving to DB here
+
+                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        });
+
+        // close dialog box on click
+        Button cancelButton = (Button)layout.findViewById(R.id.dialogCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }

@@ -445,13 +445,23 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:background="@color/colorBackground"
             android:textColor="@color/colorTextBackground"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/dialogOk"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:background="@color/colorBackground"
+            android:textColor="@color/colorTextBackground"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/dialogCancel"
             android:padding="10dp"
             android:layout_margin="5dp"/>
 

@@ -3,11 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:padding="10dp" >
 
     <TextView
         android:id="@+id/group_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:textColor="@color/colorAccent"
         android:paddingLeft="25dp"/>
+
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/ic_add"
+        android:src="@android:drawable/ic_input_add" />
+
 </LinearLayout>
