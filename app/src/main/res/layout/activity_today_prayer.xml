@@ -19,6 +19,28 @@
 
         <!-- Content -->
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/add">
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/ic_add"
+                android:paddingRight="20dp"
+                android:src="@android:drawable/ic_input_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Prayer Item"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+
         <ExpandableListView
             android:id="@+id/prayer_list"
             android:layout_width="match_parent"

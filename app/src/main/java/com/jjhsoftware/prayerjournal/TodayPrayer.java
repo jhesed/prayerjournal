@@ -1,23 +1,31 @@
 package com.jjhsoftware.prayerjournal;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.jjhsoftware.prayerjournal.adapters.ExpandableListAdapter;
+import com.jjhsoftware.prayerjournal.db.PrayerContract;
+import com.jjhsoftware.prayerjournal.db.PrayerDbHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class TodayPrayer extends Activity {
@@ -26,19 +34,27 @@ public class TodayPrayer extends Activity {
     List<String> childList;
     Map<String, List<String>> prayerCollection;
     ExpandableListView expListView;
+    private PrayerDbHelper mHelper;
+    private static String[] pendingItems;
+    private static String[] doneItems;
+    private static String[] answeredItems;
 
     // Labels
     private static final String PENDING_TITLE = "Pending";
     private static final String DONE_TITLE = "Done";
     private static final String ANSWERED_TITLE = "Answered";
+    private static final String TAG = "TodayPrayer";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_prayer);
 
-        createGroupList();
+        // Setup DB connection
+        mHelper = new PrayerDbHelper(this);
 
+        createGroupList();
         createCollection();
 
         expListView = (ExpandableListView) findViewById(R.id.prayer_list);
@@ -49,7 +65,7 @@ public class TodayPrayer extends Activity {
 
         //setGroupIndicatorToRight();
 
-        expListView.setOnChildClickListener(new OnChildClickListener() {
+            expListView.setOnChildClickListener(new OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
@@ -65,23 +81,32 @@ public class TodayPrayer extends Activity {
                 // Show dialog box
             }
         });
+
+        // Add prayer itemfshow
+        LinearLayout addButton = (LinearLayout) findViewById(R.id.add);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addPrayerItem();
+            }
+        });
     }
 
     private void createGroupList() {
         groupList = new ArrayList<String>();
 
+        // Fetch prayer items from database
+        pendingItems = getPrayerItems(0, 0, getDayInInteger());
+        doneItems = getPrayerItems(1, 0, getDayInInteger());
+        answeredItems = getPrayerItems(0, 1, getDayInInteger());
+
         // TODO: Fetch counter in DB
-        groupList.add(this.PENDING_TITLE + " (4)");
-        groupList.add(this.DONE_TITLE + " (0)");
-        groupList.add(this.ANSWERED_TITLE + " (0)");
+        groupList.add(this.PENDING_TITLE + " (" + pendingItems.length + ")");
+        groupList.add(this.DONE_TITLE + " (" + doneItems.length + ")");
+        groupList.add(this.ANSWERED_TITLE + " (" + answeredItems.length + ")");
     }
 
     private void createCollection() {
-        // preparing prayers collection(child)
-        String[] pendingItems = { "Prayer Title 1", "Prayer Title 2",
-                "Prayer Title 3" };
-        String[] doneItems = {};
-        String[] answeredItems = {};
 
         prayerCollection = new LinkedHashMap<String, List<String>>();
 
@@ -92,6 +117,30 @@ public class TodayPrayer extends Activity {
         prayerCollection.put(groupList.get(1), childList);
         loadChild(answeredItems);
         prayerCollection.put(groupList.get(2), childList);
+    }
+
+    private String[] getPrayerItems(int isDone, int isAnswered, int day) {
+
+        // Initialize list
+        String[] pendingList = {};
+
+
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
+                " FROM " + PrayerContract.PrayerEntry.TABLE + " WHERE " +
+                PrayerContract.PrayerEntry.COL_IS_DONE + " = " + isDone + " AND " +
+                PrayerContract.PrayerEntry.COL_DAY + " = " + day + " AND " +
+                PrayerContract.PrayerEntry.COL_IS_ANSWERED + " = " + isAnswered + ";";
+
+        Log.d(TAG, query);
+        Cursor cursor = db.rawQuery(query, null);
+        int counter = 0;
+        while (cursor.moveToNext()) {
+            pendingList[counter]= cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE));
+            counter++;
+        }
+
+        return pendingList;
     }
 
     private void loadChild(String[] prayerModels) {
@@ -172,9 +221,10 @@ public class TodayPrayer extends Activity {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        View layout = inflater.inflate(R.layout.activity_add_edit_prayer, null);
+        View layout = inflater.inflate(R.layout.activity_edit_prayer, null);
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
+
 
         // submit button on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);
@@ -200,9 +250,9 @@ public class TodayPrayer extends Activity {
         dialog.show();
     }
 
-    private void addDetails() {
+    private void addPrayerItem() {
         /**
-         Edit details on prayer item
+         Add prayer item
          */
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -211,9 +261,29 @@ public class TodayPrayer extends Activity {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        View layout = inflater.inflate(R.layout.activity_add_edit_prayer, null);
+        View layout = inflater.inflate(R.layout.activity_add_prayer, null);
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
+
+        // TODO: Uncomment if reminder feature is already available
+//        // Reminder Radio button
+//        RadioGroup groupRadio=(RadioGroup)layout.findViewById(R.id.radio_reminder);
+//        final TimePicker timePicker = (TimePicker) layout.findViewById(R.id.time_picker);
+//        groupRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//
+//                if(checkedId == R.id.radio_yes)
+//                {
+//                    timePicker.setVisibility(View.VISIBLE);
+//                }
+//                else if(checkedId == R.id.radio_no)
+//                {
+//                    timePicker.setVisibility(View.GONE);
+//                }
+//            }
+//        });
 
         // submit button on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);
@@ -237,6 +307,11 @@ public class TodayPrayer extends Activity {
         });
 
         dialog.show();
+    }
+
+    private int getDayInInteger() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
 }
