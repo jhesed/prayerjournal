@@ -15,6 +15,7 @@ public class PrayerContract {
         public static final String TABLE = "prayer";
 
         // properties
+
         public static final String COL_TITLE = "title";
         public static final String COL_CONTENT = "content";
         public static final String COL_DAY = "day";

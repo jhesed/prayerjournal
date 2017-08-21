@@ -23,18 +23,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
     private Map<String, List<String>> prayerCollections;
+    private Map<String, List<Integer>> prayerCollectionIDs;
     private List<String> prayers;
 
     public ExpandableListAdapter(Activity context, List<String> prayers,
-                                 Map<String, List<String>> prayerCollections) {
+                                 Map<String, List<String>> prayerCollections,
+                                 Map<String, List<Integer>> prayerCollectionIDs) {
         this.context = context;
         this.prayerCollections = prayerCollections;
+        this.prayerCollectionIDs = prayerCollectionIDs; // ids of prayer itemss
         this.prayers = prayers;
 
     }
 
     public Object getChild(int groupPosition, int childPosition) {
         return prayerCollections.get(prayers.get(groupPosition)).get(childPosition);
+    }
+
+    public Object getChildDBID(int groupPosition, int childPosition) {
+        return prayerCollectionIDs.get(prayers.get(groupPosition)).get(childPosition);
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -44,7 +51,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
+
         final String prayer = (String) getChild(groupPosition, childPosition);
+
+        // Tag to Prayer with Database ID
+        final Integer prayerId = (Integer) getChildDBID(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
@@ -56,6 +67,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView infoIcon = (ImageView) convertView.findViewById(R.id.info_icon);
 
         item.setText(prayer);
+        convertView.setTag(prayerId);
         return convertView;
     }
 

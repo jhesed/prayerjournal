@@ -35,12 +35,17 @@ public class TodayPrayer extends Activity {
 
     List<String> groupList;
     List<String> childList;
+    List<Integer> childIDList;
     Map<String, List<String>> prayerCollection;
+    Map<String, List<Integer>> prayerCollectionIDs;
     ExpandableListView expListView;
     private PrayerDbHelper mHelper;
     private static ArrayList<String> pendingItems;
     private static ArrayList<String> doneItems;
     private static ArrayList<String> answeredItems;
+    private static ArrayList<Integer> pendingItemIDs;
+    private static ArrayList<Integer> doneItemIDs;
+    private static ArrayList<Integer> answeredItemIDs;
 
     // Labels
     private static final String PENDING_TITLE = "Pending";
@@ -79,7 +84,7 @@ public class TodayPrayer extends Activity {
 
         expListView = (ExpandableListView) findViewById(R.id.prayer_list);
         final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                this, groupList, prayerCollection);
+                this, groupList, prayerCollection, prayerCollectionIDs);
         expListView.setAdapter(expListAdapter);
         expListView.expandGroup(0); // select pending by default
 
@@ -120,36 +125,57 @@ public class TodayPrayer extends Activity {
     private void createCollection() {
 
         prayerCollection = new LinkedHashMap<String, List<String>>();
+        prayerCollectionIDs = new LinkedHashMap<String, List<Integer>>();
 
-        // TODO: Fetch this dynamically from DB
-        loadChild(pendingItems);
-        prayerCollection.put(groupList.get(0), childList);
-        loadChild(doneItems);
-        prayerCollection.put(groupList.get(1), childList);
-        loadChild(answeredItems);
-        prayerCollection.put(groupList.get(2), childList);
+//        loadChild(pendingItems);
+//        prayerCollection.put(groupList.get(0), childList);
+//        loadChild(doneItems);
+//        prayerCollection.put(groupList.get(1), childList);
+//        loadChild(answeredItems);
+//        prayerCollection.put(groupList.get(2), childList);
+
+        prayerCollection.put(groupList.get(0), pendingItems);
+        prayerCollection.put(groupList.get(1), doneItems);
+        prayerCollection.put(groupList.get(2), answeredItems);
+
+        prayerCollectionIDs.put(groupList.get(0), pendingItemIDs);
+        prayerCollectionIDs.put(groupList.get(1), doneItemIDs);
+        prayerCollectionIDs.put(groupList.get(2), answeredItemIDs);
+
     }
 
     private ArrayList<String> getPrayerItems(int isDone, int isAnswered, int day) {
 
         // Initialize list\
-        ArrayList<String> pendingList = new ArrayList<String>();
-
+        ArrayList<String> prayers = new ArrayList<String>();
+        ArrayList<Integer> ids = new ArrayList<Integer>();
 
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
+        String query = "SELECT " + PrayerContract.PrayerEntry._ID + ", " +
+                PrayerContract.PrayerEntry.COL_TITLE +
                 " FROM " + PrayerContract.PrayerEntry.TABLE + " WHERE " +
                 PrayerContract.PrayerEntry.COL_IS_DONE + " = " + isDone + " AND " +
                 PrayerContract.PrayerEntry.COL_DAY + " = " + day + " AND " +
                 PrayerContract.PrayerEntry.COL_IS_ANSWERED + " = " + isAnswered + ";";
 
-        Log.d(TAG, query);
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            pendingList.add(cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE)));
+            prayers.add(cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE)));
+
+            // Set Ids as well
+            Integer prayerId = cursor.getInt(cursor.getColumnIndex(PrayerContract.PrayerEntry._ID));
+            ids.add(prayerId);
         }
 
-        return pendingList;
+        // Populate prayer item ids
+        if (isDone == 0 && isAnswered == 0)
+            pendingItemIDs = ids;
+        else if (isDone == 1 && isAnswered == 0)
+            doneItemIDs = ids;
+        else if (isDone == 1 && isAnswered == 1)
+            answeredItemIDs = ids;
+
+        return prayers;
     }
 
     private void loadChild(ArrayList<String> prayerModels) {
