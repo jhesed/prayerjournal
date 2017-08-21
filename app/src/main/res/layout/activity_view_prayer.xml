@@ -154,22 +154,22 @@
 
             <!--TITLES-->
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorTextBackground"
-                android:gravity="center"
-                android:layout_marginLeft="20dp">
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/colorTextBackground"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginLeft="20dp">-->
 
 
-                <ImageView
-                    android:layout_width="54dp"
-                    android:layout_height="86dp"
-                    android:id="@+id/prayer_reminder"
-                    android:src="@drawable/ic_clock" />
+                <!--<ImageView-->
+                    <!--android:layout_width="54dp"-->
+                    <!--android:layout_height="86dp"-->
+                    <!--android:id="@+id/prayer_reminder"-->
+                    <!--android:src="@drawable/ic_clock" />-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
             <!--DYNAMIC VALUES-->
 
