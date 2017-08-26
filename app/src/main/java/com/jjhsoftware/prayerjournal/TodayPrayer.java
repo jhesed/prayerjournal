@@ -16,6 +16,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -217,18 +219,6 @@ public class TodayPrayer extends Activity {
          Displays details on prayer item
          */
 
-        // Retrieve details of prayer items
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
-                ", " + PrayerContract.PrayerEntry.COL_CONTENT +
-                " FROM " + PrayerContract.PrayerEntry.TABLE +
-                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + childId;
-
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToNext();
-        String title = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE));
-        String content = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_CONTENT));
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
@@ -239,11 +229,33 @@ public class TodayPrayer extends Activity {
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
 
+        // Retrieve layout objects
         final TextView titleObj = (TextView)layout.findViewById(R.id.dialogTitle);
         final TextView contentObj = (TextView)layout.findViewById(R.id.content);
+        final TextView answeredObj = (TextView)layout.findViewById(R.id.answeredText);
 
+        // Retrieve details of prayer items from database
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
+                ", " + PrayerContract.PrayerEntry.COL_CONTENT +
+                ", " + PrayerContract.PrayerEntry.COL_IS_ANSWERED +
+                " FROM " + PrayerContract.PrayerEntry.TABLE +
+                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + childId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToNext();
+
+        final String title = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE));
+        final String content = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_CONTENT));
+        final int isAnswered = cursor.getInt(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_IS_ANSWERED));
+        String isAnsweredText = "Soon";
+        if (isAnswered == 1)
+            isAnsweredText = "Yes";
+
+        // Update dialog conetnt
         titleObj.setText(title);
         contentObj.setText(content);
+        answeredObj.setText(isAnsweredText);
 
         // close dialog box on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);
@@ -259,14 +271,14 @@ public class TodayPrayer extends Activity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editDetails();
+                editDetails(title, content, isAnswered);
             }
         });
 
         dialog.show();
     }
 
-    private void editDetails() {
+    private void editDetails(String title, String content, int isAnswered) {
         /**
          Edit details on prayer item
          */
@@ -281,6 +293,24 @@ public class TodayPrayer extends Activity {
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
 
+        // Retrieve layout objects
+        final TextView titleObj = (TextView)layout.findViewById(R.id.prayer_title);
+        final TextView contentObj = (TextView)layout.findViewById(R.id.prayer_content);
+        final RadioGroup answeredObj = (RadioGroup) layout.findViewById(R.id.radio_answered_group);
+
+        // Update content
+        titleObj.setText(title);
+        contentObj.setText(content);
+        if (isAnswered == 1)
+            answeredObj.check(R.id.radio_answered_yes);
+        else
+            answeredObj.check(R.id.radio_answered_no);
+
+        // Reminder Radio button
+//        RadioGroup groupRadio=(RadioGroup)layout.findViewById(R.id.radio_answered_group);
+//        groupRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//        });
 
         // submit button on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);

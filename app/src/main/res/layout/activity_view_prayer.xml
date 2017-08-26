@@ -286,6 +286,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Soon"
+                        android:id="@+id/answeredText"
                         android:textColor="@color/colorTextEmphasis"/>
 
                 </LinearLayout>
