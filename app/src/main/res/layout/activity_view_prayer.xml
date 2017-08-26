@@ -116,7 +116,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="This is a sample prayer request. May God bless this application"
-                        android:textColor="@color/colorTextEmphasis"/>
+                        android:textColor="@color/colorTextEmphasis"
+                        android:id="@+id/content"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -134,23 +135,23 @@
 
     <!-- INFO -->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
-        android:weightSum="1"
-        android:padding="10dp"
-        android:gravity="center"
-        android:layout_gravity="center">
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/colorTextBackground"-->
+        <!--android:weightSum="1"-->
+        <!--android:padding="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_gravity="center">-->
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTextBackground"
-            android:gravity="center"
-            android:layout_weight=".20">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/colorTextBackground"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight=".20">-->
 
             <!--TITLES-->
 
@@ -173,40 +174,40 @@
 
             <!--DYNAMIC VALUES-->
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorTextBackground"
-                android:layout_weight=".80"
-                android:layout_marginLeft="20dp">
+            <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/colorTextBackground"-->
+                <!--android:layout_weight=".80"-->
+                <!--android:layout_marginLeft="20dp">-->
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextBackground"
-                    android:weightSum="1">
+                <!--<LinearLayout-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/colorTextBackground"-->
+                    <!--android:weightSum="1">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reminder:"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/colorPrimary"
-                        android:paddingBottom="10dp"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Reminder:"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:textColor="@color/colorPrimary"-->
+                        <!--android:paddingBottom="10dp"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="2:00 PM"
-                        android:textColor="@color/colorTextEmphasis"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="2:00 PM"-->
+                        <!--android:textColor="@color/colorTextEmphasis"/>-->
 
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <!--END INFO-->
     <!--DIVIDER-->

@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -98,9 +99,11 @@ public class TodayPrayer extends Activity {
                         groupPosition, childPosition);
 //                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
 //                        .show();
-
+                final Integer childId = (Integer) expListAdapter.getChildDBID(
+                        groupPosition, childPosition);
+                Log.d(TAG, "-------: " + childId);
                 // Show pop up dialog of information
-                showDetails();
+                showDetails(childId);
                 return true;
 
                 // Show dialog box
@@ -209,10 +212,22 @@ public class TodayPrayer extends Activity {
 //        return true;
 //    }
 
-    private void showDetails() {
+    private void showDetails(Integer childId) {
         /**
          Displays details on prayer item
          */
+
+        // Retrieve details of prayer items
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
+                ", " + PrayerContract.PrayerEntry.COL_CONTENT +
+                " FROM " + PrayerContract.PrayerEntry.TABLE +
+                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + childId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToNext();
+        String title = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE));
+        String content = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_CONTENT));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
@@ -223,6 +238,12 @@ public class TodayPrayer extends Activity {
         View layout = inflater.inflate(R.layout.activity_view_prayer, null);
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
+
+        final TextView titleObj = (TextView)layout.findViewById(R.id.dialogTitle);
+        final TextView contentObj = (TextView)layout.findViewById(R.id.content);
+
+        titleObj.setText(title);
+        contentObj.setText(content);
 
         // close dialog box on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);
