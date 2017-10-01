@@ -164,6 +164,7 @@ public class TodayPrayer extends Activity {
                 PrayerContract.PrayerEntry.COL_IS_ANSWERED + " = " + isAnswered + ";";
 
         Cursor cursor = db.rawQuery(query, null);
+
         while (cursor.moveToNext()) {
             prayers.add(cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE)));
 
@@ -249,6 +250,8 @@ public class TodayPrayer extends Activity {
         final String content = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_CONTENT));
         final int isAnswered = cursor.getInt(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_IS_ANSWERED));
         String isAnsweredText = "Soon";
+        final int prayerId = childId;
+
         if (isAnswered == 1)
             isAnsweredText = "Yes";
 
@@ -271,14 +274,14 @@ public class TodayPrayer extends Activity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editDetails(title, content, isAnswered);
+                editDetails(prayerId, title, content, isAnswered);
             }
         });
 
         dialog.show();
     }
 
-    private void editDetails(String title, String content, int isAnswered) {
+    private void editDetails(int childId, String title, final String content, int isAnswered) {
         /**
          Edit details on prayer item
          */
@@ -297,6 +300,7 @@ public class TodayPrayer extends Activity {
         final TextView titleObj = (TextView)layout.findViewById(R.id.prayer_title);
         final TextView contentObj = (TextView)layout.findViewById(R.id.prayer_content);
         final RadioGroup answeredObj = (RadioGroup) layout.findViewById(R.id.radio_answered_group);
+        final int prayerId = childId;
 
         // Update content
         titleObj.setText(title);
@@ -306,12 +310,6 @@ public class TodayPrayer extends Activity {
         else
             answeredObj.check(R.id.radio_answered_no);
 
-        // Reminder Radio button
-//        RadioGroup groupRadio=(RadioGroup)layout.findViewById(R.id.radio_answered_group);
-//        groupRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//
-//        });
-
         // submit button on click
         Button okButton = (Button)layout.findViewById(R.id.dialogOk);
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -319,8 +317,17 @@ public class TodayPrayer extends Activity {
             public void onClick(View view) {
                 // TODO: Add saving to DB here
 
+                SQLiteDatabase db = mHelper.getReadableDatabase();
+                String query = "UPDATE " + PrayerContract.PrayerEntry.TABLE +
+                        " SET " + PrayerContract.PrayerEntry.COL_TITLE + "=\"" + titleObj.getText() + "\", " +
+                        " SET " + PrayerContract.PrayerEntry.COL_CONTENT + "=\"" + contentObj.getText() + "\", " +
+                        " SET " + PrayerContract.PrayerEntry.COL_IS_ANSWERED + "=\"" + titleObj.getText() + "\", " +
+                        " WHERE " + PrayerContract.PrayerEntry._ID + "=" + prayerId;
+                Cursor cursor = db.rawQuery(query, null);
+
                 Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
+                showDetails(prayerId);
             }
         });
 
@@ -332,7 +339,6 @@ public class TodayPrayer extends Activity {
                 dialog.dismiss();
             }
         });
-
 
         dialog.show();
     }
@@ -386,7 +392,7 @@ public class TodayPrayer extends Activity {
                 String title = titleObj.getText().toString();
                 String content = contentObj.getText().toString();
 
-                // TODO: Check row uniquenes
+                // TODO: Check row uniqueness
                 // Save to database
                 SQLiteDatabase db = mHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
