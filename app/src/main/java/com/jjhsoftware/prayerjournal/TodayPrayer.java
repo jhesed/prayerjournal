@@ -42,7 +42,7 @@ public class TodayPrayer extends Activity {
     Map<String, List<String>> prayerCollection;
     Map<String, List<Integer>> prayerCollectionIDs;
     ExpandableListView expListView;
-    private PrayerDbHelper mHelper;
+    private PrayerDbHelper dbHelper;
     private static ArrayList<String> pendingItems;
     private static ArrayList<String> doneItems;
     private static ArrayList<String> answeredItems;
@@ -63,7 +63,7 @@ public class TodayPrayer extends Activity {
         setContentView(R.layout.activity_today_prayer);
 
         // Setup DB connection
-        mHelper = new PrayerDbHelper(this);
+        dbHelper = new PrayerDbHelper(this);
 
         initializeList();
 
@@ -121,7 +121,6 @@ public class TodayPrayer extends Activity {
         doneItems = getPrayerItems(1, 0, getDayInInteger());
         answeredItems = getPrayerItems(0, 1, getDayInInteger());
 
-        // TODO: Fetch counter in DB
         groupList.add(this.PENDING_TITLE + " (" + pendingItems.size() + ")");
         groupList.add(this.DONE_TITLE + " (" + doneItems.size() + ")");
         groupList.add(this.ANSWERED_TITLE + " (" + answeredItems.size() + ")");
@@ -155,15 +154,7 @@ public class TodayPrayer extends Activity {
         ArrayList<String> prayers = new ArrayList<String>();
         ArrayList<Integer> ids = new ArrayList<Integer>();
 
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        String query = "SELECT " + PrayerContract.PrayerEntry._ID + ", " +
-                PrayerContract.PrayerEntry.COL_TITLE +
-                " FROM " + PrayerContract.PrayerEntry.TABLE + " WHERE " +
-                PrayerContract.PrayerEntry.COL_IS_DONE + " = " + isDone + " AND " +
-                PrayerContract.PrayerEntry.COL_DAY + " = " + day + " AND " +
-                PrayerContract.PrayerEntry.COL_IS_ANSWERED + " = " + isAnswered + ";";
-
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = dbHelper.selectAll(isDone, day, isAnswered);
 
         while (cursor.moveToNext()) {
             prayers.add(cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE)));
@@ -236,14 +227,7 @@ public class TodayPrayer extends Activity {
         final TextView answeredObj = (TextView)layout.findViewById(R.id.answeredText);
 
         // Retrieve details of prayer items from database
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
-                ", " + PrayerContract.PrayerEntry.COL_CONTENT +
-                ", " + PrayerContract.PrayerEntry.COL_IS_ANSWERED +
-                " FROM " + PrayerContract.PrayerEntry.TABLE +
-                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + childId;
-
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = dbHelper.select(childId);
         cursor.moveToNext();
 
         final String title = cursor.getString(cursor.getColumnIndex(PrayerContract.PrayerEntry.COL_TITLE));
@@ -274,6 +258,7 @@ public class TodayPrayer extends Activity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 editDetails(prayerId, title, content, isAnswered);
             }
         });
@@ -315,16 +300,7 @@ public class TodayPrayer extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Add saving to DB here
-
-                SQLiteDatabase db = mHelper.getReadableDatabase();
-                String query = "UPDATE " + PrayerContract.PrayerEntry.TABLE +
-                        " SET " + PrayerContract.PrayerEntry.COL_TITLE + "=\"" + titleObj.getText() + "\", " +
-                        " SET " + PrayerContract.PrayerEntry.COL_CONTENT + "=\"" + contentObj.getText() + "\", " +
-                        " SET " + PrayerContract.PrayerEntry.COL_IS_ANSWERED + "=\"" + titleObj.getText() + "\", " +
-                        " WHERE " + PrayerContract.PrayerEntry._ID + "=" + prayerId;
-                Cursor cursor = db.rawQuery(query, null);
-
+                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText());
                 Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
                 showDetails(prayerId);
@@ -394,7 +370,7 @@ public class TodayPrayer extends Activity {
 
                 // TODO: Check row uniqueness
                 // Save to database
-                SQLiteDatabase db = mHelper.getWritableDatabase();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(PrayerContract.PrayerEntry.COL_TITLE, title);
                 values.put(PrayerContract.PrayerEntry.COL_CONTENT, content);

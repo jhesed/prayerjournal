@@ -1,6 +1,7 @@
 package com.jjhsoftware.prayerjournal.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -44,4 +45,42 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PrayerContract.PrayerEntry.TABLE);
         onCreate(db);
     }
+
+    public Cursor selectAll(int isDone, int day, int isAnswered) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + PrayerContract.PrayerEntry._ID + ", " +
+                PrayerContract.PrayerEntry.COL_TITLE +
+                " FROM " + PrayerContract.PrayerEntry.TABLE + " WHERE " +
+                PrayerContract.PrayerEntry.COL_IS_DONE + " = " + isDone + " AND " +
+                PrayerContract.PrayerEntry.COL_DAY + " = " + day + " AND " +
+                PrayerContract.PrayerEntry.COL_IS_ANSWERED + " = " + isAnswered + ";";
+
+        return db.rawQuery(query, null);
+    }
+
+    public Cursor select(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
+                ", " + PrayerContract.PrayerEntry.COL_CONTENT +
+                ", " + PrayerContract.PrayerEntry.COL_IS_ANSWERED +
+                " FROM " + PrayerContract.PrayerEntry.TABLE +
+                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + id;
+
+        return db.rawQuery(query, null);
+    }
+
+    public void update(int id, CharSequence title, CharSequence content) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "UPDATE " + PrayerContract.PrayerEntry.TABLE +
+                " SET " + PrayerContract.PrayerEntry.COL_TITLE + "=\"" + title + "\", " +
+                PrayerContract.PrayerEntry.COL_CONTENT + "=\"" + content + "\", " +
+                PrayerContract.PrayerEntry.COL_IS_ANSWERED + "=\"" + title + "\" " +
+                " WHERE " + PrayerContract.PrayerEntry._ID + "=" + id;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.close();
+    }
+
+    protected void delete() {}
 }
