@@ -1,10 +1,13 @@
 package com.jjhsoftware.prayerjournal.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.Calendar;
 
 /**
  * Created by jhesed on 7/29/2017.
@@ -14,7 +17,6 @@ import android.util.Log;
 public class PrayerDbHelper extends SQLiteOpenHelper {
 
     final String TAG = "PrayerDBHelper";
-
     public PrayerDbHelper(Context context) {
         super(context, PrayerContract.DB_NAME, null, PrayerContract.DB_VERSION);
     }
@@ -47,7 +49,6 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor selectAll(int isDone, int day, int isAnswered) {
-
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + PrayerContract.PrayerEntry._ID + ", " +
                 PrayerContract.PrayerEntry.COL_TITLE +
@@ -61,6 +62,7 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
 
     public Cursor select(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
+
         String query = "SELECT " + PrayerContract.PrayerEntry.COL_TITLE +
                 ", " + PrayerContract.PrayerEntry.COL_CONTENT +
                 ", " + PrayerContract.PrayerEntry.COL_IS_ANSWERED +
@@ -70,17 +72,38 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public void update(int id, CharSequence title, CharSequence content) {
-
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void update(int id, CharSequence title, CharSequence content, int isAnswered) {
+        SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + PrayerContract.PrayerEntry.TABLE +
                 " SET " + PrayerContract.PrayerEntry.COL_TITLE + "=\"" + title + "\", " +
                 PrayerContract.PrayerEntry.COL_CONTENT + "=\"" + content + "\", " +
-                PrayerContract.PrayerEntry.COL_IS_ANSWERED + "=\"" + title + "\" " +
+                PrayerContract.PrayerEntry.COL_IS_ANSWERED + "=\"" + isAnswered + "\" " +
                 " WHERE " + PrayerContract.PrayerEntry._ID + "=" + id;
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.close();
+        db.execSQL(query);
     }
 
-    protected void delete() {}
+    protected void delete(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + PrayerContract.PrayerEntry.TABLE +
+                " WHERE " + PrayerContract.PrayerEntry._ID + " = " + id;
+        db.execSQL(query);
+    }
+
+    public void insert(String title, String content) {
+        // TODO: Check row uniqueness
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PrayerContract.PrayerEntry.COL_TITLE, title);
+        values.put(PrayerContract.PrayerEntry.COL_CONTENT, content);
+        values.put(PrayerContract.PrayerEntry.COL_DAY, getDayInInteger());
+        db.insertWithOnConflict(PrayerContract.PrayerEntry.TABLE,
+                null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        db.close();
+    }
+
+    public int getDayInInteger() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
 }

@@ -117,9 +117,9 @@ public class TodayPrayer extends Activity {
         groupList = new ArrayList<String>();
 
         // Fetch prayer items from database
-        pendingItems = getPrayerItems(0, 0, getDayInInteger());
-        doneItems = getPrayerItems(1, 0, getDayInInteger());
-        answeredItems = getPrayerItems(0, 1, getDayInInteger());
+        pendingItems = getPrayerItems(0, 0, dbHelper.getDayInInteger());
+        doneItems = getPrayerItems(1, 0, dbHelper.getDayInInteger());
+        answeredItems = getPrayerItems(0, 1, dbHelper.getDayInInteger());
 
         groupList.add(this.PENDING_TITLE + " (" + pendingItems.size() + ")");
         groupList.add(this.DONE_TITLE + " (" + doneItems.size() + ")");
@@ -130,13 +130,6 @@ public class TodayPrayer extends Activity {
 
         prayerCollection = new LinkedHashMap<String, List<String>>();
         prayerCollectionIDs = new LinkedHashMap<String, List<Integer>>();
-
-//        loadChild(pendingItems);
-//        prayerCollection.put(groupList.get(0), childList);
-//        loadChild(doneItems);
-//        prayerCollection.put(groupList.get(1), childList);
-//        loadChild(answeredItems);
-//        prayerCollection.put(groupList.get(2), childList);
 
         prayerCollection.put(groupList.get(0), pendingItems);
         prayerCollection.put(groupList.get(1), doneItems);
@@ -266,7 +259,7 @@ public class TodayPrayer extends Activity {
         dialog.show();
     }
 
-    private void editDetails(int childId, String title, final String content, int isAnswered) {
+    private void editDetails(int childId, String title, final String content, final int isAnswered) {
         /**
          Edit details on prayer item
          */
@@ -295,17 +288,7 @@ public class TodayPrayer extends Activity {
         else
             answeredObj.check(R.id.radio_answered_no);
 
-        // submit button on click
-        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText());
-                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-                showDetails(prayerId);
-            }
-        });
+        dialog.show();
 
         // close dialog box on click
         ImageView cancelButton = (ImageView)layout.findViewById(R.id.cancel_icon);
@@ -316,7 +299,18 @@ public class TodayPrayer extends Activity {
             }
         });
 
-        dialog.show();
+        // submit button on click
+        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText(), isAnswered);
+                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                initializeList();
+                showDetails(prayerId);
+            }
+        });
     }
 
     private void addPrayerItem() {
@@ -345,7 +339,7 @@ public class TodayPrayer extends Activity {
 //        final TimePicker timePicker = (TimePicker) layout.findViewById(R.id.time_picker);
 //        groupRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //
-//            @Override
+//            @Overrid4e
 //            public void onCheckedChanged(RadioGroup group, int checkedId) {
 //
 //                if(checkedId == R.id.radio_yes)
@@ -368,20 +362,8 @@ public class TodayPrayer extends Activity {
                 String title = titleObj.getText().toString();
                 String content = contentObj.getText().toString();
 
-                // TODO: Check row uniqueness
-                // Save to database
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(PrayerContract.PrayerEntry.COL_TITLE, title);
-                values.put(PrayerContract.PrayerEntry.COL_CONTENT, content);
-                values.put(PrayerContract.PrayerEntry.COL_DAY, getDayInInteger());
-                db.insertWithOnConflict(PrayerContract.PrayerEntry.TABLE,
-                        null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                db.close();
-
-                // Reload prayer item content
-                initializeList();
-
+                dbHelper.insert(title, content);  // Save to database
+                initializeList();  // Reload list
                 Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
@@ -397,11 +379,6 @@ public class TodayPrayer extends Activity {
         });
 
         dialog.show();
-    }
-
-    private int getDayInInteger() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
 }
