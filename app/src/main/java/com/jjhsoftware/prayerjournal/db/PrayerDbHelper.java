@@ -82,7 +82,7 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    protected void delete(int id) {
+    public void delete(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + PrayerContract.PrayerEntry.TABLE +
                 " WHERE " + PrayerContract.PrayerEntry._ID + " = " + id;

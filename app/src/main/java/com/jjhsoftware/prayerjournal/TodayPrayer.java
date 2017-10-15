@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -97,18 +98,25 @@ public class TodayPrayer extends Activity {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
-                        groupPosition, childPosition);
-//                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-//                        .show();
                 final Integer childId = (Integer) expListAdapter.getChildDBID(
                         groupPosition, childPosition);
-                Log.d(TAG, "-------: " + childId);
-                // Show pop up dialog of information
                 showDetails(childId);
                 return true;
+            }
+        });
 
-                // Show dialog box
+        expListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    final Integer childId = (Integer) expListAdapter.getChildDBID(
+                            groupPosition, childPosition);
+                    showDeleteDialog(childId);
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -309,6 +317,43 @@ public class TodayPrayer extends Activity {
                 dialog.dismiss();
                 initializeList();
                 showDetails(prayerId);
+            }
+        });
+    }
+
+    private void showDeleteDialog(int childId) {
+        /**
+         Delete details on prayer item
+         */
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.activity_delete_prayer, null);
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+        final int prayerId = childId;
+
+        dialog.show();
+
+        // close dialog box on click
+        Button cancelButton = (Button)layout.findViewById(R.id.cancel_icon);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        // submit button on click
+        Button okButton = (Button)layout.findViewById(R.id.dialogOk);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbHelper.delete(prayerId);
+                Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                initializeList();
             }
         });
     }
