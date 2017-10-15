@@ -388,17 +388,17 @@
                             android:id="@+id/radio_answered_group">
 
 
+                            <RadioButton android:id="@+id/radio_answered_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".50"
+                                android:text="Soon"
+                                android:checked="true"/>
                                 <RadioButton android:id="@+id/radio_answered_yes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".50"
                                     android:text="Yes"/>
-                                <RadioButton android:id="@+id/radio_answered_no"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".50"
-                                    android:text="Soon"
-                                    android:checked="true"/>
 
                         </RadioGroup>
                     </LinearLayout>

@@ -8,11 +8,23 @@
     android:gravity="center"
     android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Today"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="25sp" />
+        android:background="@color/colorTextBackground"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/header_icon"
+            android:src="@android:drawable/ic_menu_my_calendar" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="25sp" />
+    </LinearLayout>
 
 </RelativeLayout>
