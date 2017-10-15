@@ -1,7 +1,6 @@
 package com.jjhsoftware.prayerjournal;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +11,9 @@ import com.jjhsoftware.prayerjournal.db.PrayerDbHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,10 +24,8 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class TodayPrayer extends Activity {
@@ -273,11 +266,7 @@ public class TodayPrayer extends Activity {
          */
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         View layout = inflater.inflate(R.layout.activity_edit_prayer, null);
         builder.setView(layout);
         final AlertDialog dialog = builder.create();
@@ -312,7 +301,8 @@ public class TodayPrayer extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText(), isAnswered);
+                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText(),
+                        answeredObj.getCheckedRadioButtonId());
                 Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
                 initializeList();
