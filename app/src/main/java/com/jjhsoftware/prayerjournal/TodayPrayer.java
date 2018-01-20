@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,7 +165,7 @@ public class TodayPrayer extends Activity {
             pendingItemIDs = ids;
         else if (isDone == 1 && isAnswered == 0)
             doneItemIDs = ids;
-        else if (isDone == 1 && isAnswered == 1)
+        else if (isAnswered == 1)
             answeredItemIDs = ids;
 
         return prayers;
@@ -301,8 +303,12 @@ public class TodayPrayer extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText(),
-                        answeredObj.getCheckedRadioButtonId());
+
+                // Retrieves integer representation of is answered radio button
+                int selectedId = answeredObj.getCheckedRadioButtonId();
+                int isAnswered = dbHelper.getIsAnsweredInteger(selectedId);
+
+                dbHelper.update(prayerId, titleObj.getText(), contentObj.getText(), isAnswered);
                 Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
                 initializeList();

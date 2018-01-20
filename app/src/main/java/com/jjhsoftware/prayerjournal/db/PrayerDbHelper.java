@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.jjhsoftware.prayerjournal.R;
+
 import java.util.Calendar;
 
 /**
@@ -106,4 +108,15 @@ public class PrayerDbHelper extends SQLiteOpenHelper {
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    public int getIsAnsweredInteger(int selectedId) {
+
+        // get selected radio button for answered
+        int isAnswered = 0;
+        switch (selectedId) {
+            case R.id.radio_answered_yes:
+                isAnswered = 1;
+                break;
+        }
+        return isAnswered;
+    }
 }
