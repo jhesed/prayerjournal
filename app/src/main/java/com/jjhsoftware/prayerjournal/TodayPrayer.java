@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,7 +65,7 @@ public class TodayPrayer extends Activity {
         initializeList();
 
         // Add prayer items section
-        LinearLayout addButton = (LinearLayout) findViewById(R.id.add);
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

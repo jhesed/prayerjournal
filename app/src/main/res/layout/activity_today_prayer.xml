@@ -2,54 +2,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".TodayPrayer"
     android:id="@+id/main_container">
 
     <!-- Header aligned to top -->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/header"
-            android:id="@+id/header"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"/>
-
-        <!-- Content -->
 
         <LinearLayout
-            android:id="@+id/add"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/ic_add"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:paddingRight="20dp"
-                android:src="@android:drawable/ic_input_add" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            <include layout="@layout/header"
+                android:id="@+id/header"
                 android:layout_height="wrap_content"
-                android:text="Add Prayer Item"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary" />
+                android:layout_width="fill_parent"/>
 
+            <!-- Content -->
+
+            <ExpandableListView
+                android:id="@+id/prayer_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ExpandableListView>
         </LinearLayout>
 
-        <ExpandableListView
-            android:id="@+id/prayer_list"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-        </ExpandableListView>
-
-    </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_pray"
+            android:backgroundTint="@color/colorPrimary"
+            android:tint="@android:color/white"
+        />
+    </RelativeLayout>
 </RelativeLayout>
