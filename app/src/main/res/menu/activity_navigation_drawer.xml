@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Prayer Journal">
+        <menu>
+            <item
+                android:id="@+id/prayer_journal_today"
+                android:icon="@drawable/ic_pray"
+                android:title="Today" />
+            <item
+                android:id="@+id/prayer_journal_week"
+                android:icon="@android:drawable/ic_menu_week"
+                android:title="Weekly" />
+            <item
+                android:id="@+id/prayer_journal_wall"
+                android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="Community" />
+        </menu>
+    </item>
+
+    <item android:title="Random Bible Verse">
+        <menu>
+            <item
+                android:id="@+id/random_verse_home"
+                android:icon="@android:drawable/presence_online"
+                android:title="Random" />
+            <item
+                android:id="@+id/random_verse_all"
+                android:icon="@android:drawable/ic_menu_sort_by_size"
+                android:title="All verses" />
+        </menu>
+    </item>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_contact_us"
+                android:icon="@android:drawable/sym_action_email"
+                android:title="Contact us" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+        </menu>
+    </item>
+
+</menu>
